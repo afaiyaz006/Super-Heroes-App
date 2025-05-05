@@ -1,5 +1,6 @@
 package com.example.super_heroes_app
 
+import android.graphics.Paint
 import android.os.Bundle
 
 import androidx.activity.ComponentActivity
@@ -24,9 +25,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,12 +45,26 @@ import com.example.super_heroes_app.model.HeroesRepository
 import com.example.super_heroes_app.ui.theme.SuperHeroAppTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             SuperHeroAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        TopAppBar(
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                titleContentColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            title = {
+                                Text(stringResource(R.string.app_name))
+                            }
+                        )
+                    }
+                ) { innerPadding ->
                     SuperHeroApp(modifier=Modifier.padding(innerPadding))
                 }
             }
@@ -62,60 +80,71 @@ fun SuperHeroApp(modifier:Modifier=Modifier){
 //
 //    }
     val herosData = HeroesRepository.heroes
-    LazyColumn(modifier=modifier.padding(16.dp),verticalArrangement = Arrangement.spacedBy(8.dp),){
-        items(herosData){
-            heroData ->
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp), // general padding
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(herosData) { heroData ->
             HeroCard(
-                modifier=modifier,
+
                 heroNameCode = heroData.nameRes,
                 heroDescriptionCode = heroData.descriptionRes,
                 heroImageCode = heroData.imageRes
             )
         }
-
     }
 }
 @Composable
-fun HeroCard(modifier: Modifier,heroNameCode:Int,heroDescriptionCode:Int,heroImageCode:Int){
+fun HeroCard(heroNameCode: Int, heroDescriptionCode: Int, heroImageCode: Int) {
     Card(
-        modifier=modifier,
-        elevation =CardDefaults.cardElevation(defaultElevation = 2.dp),
-
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(
-            modifier = modifier.padding(16.dp).height(88.dp).fillMaxSize(),
+            modifier = Modifier
+                .padding(16.dp)
+                .height(72.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier=modifier.weight(1f).height(72.dp)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(72.dp)
+            ) {
                 Text(
                     text = stringResource(heroNameCode),
-                    style = MaterialTheme.typography.displayMedium,
-                    textAlign = TextAlign.Justify,
-
+                    style = MaterialTheme.typography.displayMedium
                 )
                 Text(
                     text = stringResource(heroDescriptionCode),
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Start,
-
-
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
-            Spacer(modifier=Modifier.width(16.dp))
-            Box(modifier=modifier.size(72.dp)){
-                var imageFile = painterResource(heroImageCode)
-                Image(
-                    modifier=modifier,
-                    painter = imageFile,
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null,
-                    )
-            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Image(
+                painter = painterResource(heroImageCode),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(72.dp)
+            )
         }
     }
 }
 
 
+//@Composable
+//fun TopAppBar(title:String){
+//    Row(modifier= Modifier, horizontalArrangement = Arrangement.Center){
+//        Text(
+//            text=title,
+//            style = MaterialTheme.typography.displayLarge,
+//            textAlign = TextAlign.Center
+//        )
+//    }
+//}
 //@Composable
 //fun Greeting(name: String, modifier: Modifier = Modifier) {
 //    Text(
@@ -124,11 +153,42 @@ fun HeroCard(modifier: Modifier,heroNameCode:Int,heroDescriptionCode:Int,heroIma
 //    )
 //}
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun SuperHeroAppPreview() {
     SuperHeroAppTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Scaffold(
+//            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                TopAppBar(
+
+                    title = {
+                        Text("SuperHero-App")
+                    }
+                )
+            }
+        ) { innerPadding ->
+            SuperHeroApp(modifier=Modifier.padding(innerPadding))
+        }
+    }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun SuperHeroAppPreviewDark() {
+    SuperHeroAppTheme(darkTheme = true) {
+        Scaffold(
+//            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                TopAppBar(
+
+                    title = {
+                        Text("SuperHero")
+                    }
+                )
+            }
+        ) { innerPadding ->
             SuperHeroApp(modifier=Modifier.padding(innerPadding))
         }
     }
