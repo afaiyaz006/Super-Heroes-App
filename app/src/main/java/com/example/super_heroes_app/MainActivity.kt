@@ -62,7 +62,7 @@ fun SuperHeroApp(modifier:Modifier=Modifier){
 //
 //    }
     val herosData = HeroesRepository.heroes
-    LazyColumn(modifier = modifier){
+    LazyColumn(modifier=modifier.padding(16.dp),verticalArrangement = Arrangement.spacedBy(8.dp),){
         items(herosData){
             heroData ->
             HeroCard(
@@ -83,7 +83,7 @@ fun HeroCard(modifier: Modifier,heroNameCode:Int,heroDescriptionCode:Int,heroIma
 
     ) {
         Row(
-            modifier = modifier.height(88.dp).padding(16.dp).fillMaxSize(),
+            modifier = modifier.padding(16.dp).height(88.dp).fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier=modifier.weight(1f).height(72.dp)) {
