@@ -33,6 +33,7 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = Cabin,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
+        fontSize = 16.sp,
+
     )
 )
