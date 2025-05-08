@@ -28,6 +28,7 @@ import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.super_heroes_app.model.HeroesRepository
+
 import com.example.super_heroes_app.ui.theme.SuperHeroAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -100,7 +102,7 @@ fun SuperHeroApp(modifier:Modifier=Modifier){
 fun HeroCard(heroNameCode: Int, heroDescriptionCode: Int, heroImageCode: Int) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier
@@ -169,7 +171,14 @@ fun SuperHeroAppPreview() {
                 )
             }
         ) { innerPadding ->
-            SuperHeroApp(modifier=Modifier.padding(innerPadding))
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                SuperHeroApp()
+            }
         }
     }
 }
@@ -184,12 +193,20 @@ fun SuperHeroAppPreviewDark() {
                 TopAppBar(
 
                     title = {
-                        Text("SuperHero")
+                        Text("SuperHero-App")
                     }
                 )
             }
+
         ) { innerPadding ->
-            SuperHeroApp(modifier=Modifier.padding(innerPadding))
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                SuperHeroApp()
+            }
         }
     }
 }
